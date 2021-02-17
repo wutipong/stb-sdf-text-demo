@@ -4,10 +4,10 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/
   CACHE STRING "Vcpkg toolchain file")
 
 # set the project name
-project(sdl2-gl-project-template)
+project(stb-sdf-text-demo)
 
 # add the executable
-add_executable(sdl2-gl-project-template 
+add_executable(stb-sdf-text-demo 
 	"main.cpp" 
 	"imgui_impl/imgui_impl_sdl.h" 
 	"imgui_impl/imgui_impl_sdl.cpp"
@@ -19,8 +19,10 @@ find_package(imgui CONFIG REQUIRED)
 find_package(gl3w CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
-target_link_libraries(sdl2-gl-project-template PRIVATE SDL2::SDL2 SDL2::SDL2main imgui::imgui unofficial::gl3w::gl3w)
+find_path(STB_INCLUDE_DIRS "stb.h")
 
-target_compile_features(sdl2-gl-project-template PRIVATE cxx_std_17)
+target_include_directories(stb-sdf-text-demo PRIVATE ${STB_INCLUDE_DIRS})
+target_link_libraries(stb-sdf-text-demo PRIVATE SDL2::SDL2 SDL2::SDL2main imgui::imgui unofficial::gl3w::gl3w)
+target_compile_features(stb-sdf-text-demo PRIVATE cxx_std_17)
 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/shaders" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/shaders")
