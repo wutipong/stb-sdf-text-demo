@@ -2,7 +2,9 @@
 
 #include <glm/glm.hpp>
 #include <imgui.h>
+#include <stb_truetype.h>
 #include <string>
+#include <vector>
 
 #include "imgui-filebrowser/imfilebrowser.h"
 
@@ -17,4 +19,7 @@ private:
   std::filesystem::path fontFilePath;
   int size{64};
   glm::vec3 color{};
+
+  stbtt_fontinfo font;
+  std::vector<char> fontData;
 };
