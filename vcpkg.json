@@ -7,6 +7,8 @@
     "opengl",
     "gl3w",
     "glm",
-    "stb"
+    "stb",
+    "spdlog",
+    "fmt"
   ]
 }
