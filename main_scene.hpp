@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <GL/gl3w.h>
+#include <glm/glm.hpp>
 #include <imgui.h>
 #include <stb_truetype.h>
 #include <string>
@@ -28,5 +28,5 @@ private:
   std::vector<char> fontData;
 
   GLuint texture{0};
-  int textureWidth, textureHeight;
+  int textureWidth{0}, textureHeight{0};
 };

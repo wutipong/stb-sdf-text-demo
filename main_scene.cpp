@@ -40,11 +40,19 @@ void MainScene::DrawUI() {
                       ImGuiColorEditFlags_Float);
   }
   ImGui::End();
+
+  ImGui::Begin("Information");
+  {
+    ImGui::LabelText("Texture Width", "%i", textureWidth);
+    ImGui::LabelText("Texture Height", "%i", textureHeight);
+  }
+  ImGui::End();
 }
 
 void MainScene::UpdateTexture() {
   CleanupTexture();
-  texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth, textureHeight);
+  texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth,
+                                        textureHeight);
 }
 
 void MainScene::CleanupTexture() {
@@ -53,6 +61,4 @@ void MainScene::CleanupTexture() {
   }
 }
 
-void MainScene::CleanUp() {
-    CleanupTexture();
-}
+void MainScene::CleanUp() { CleanupTexture(); }
