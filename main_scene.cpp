@@ -5,7 +5,23 @@
 #include <stb_truetype.h>
 
 #include "io_util.hpp"
+#include "shader.hpp"
 #include "texture.hpp"
+
+void MainScene::Init() {
+  drawTextureVert =
+      shader::FromSource("shaders/draw_texture.vert", GL_VERTEX_SHADER);
+  drawTextureFrag =
+      shader::FromSource("shaders/draw_texture.frag", GL_FRAGMENT_SHADER);
+
+  drawTextureProgram = glCreateProgram();
+  glUseProgram(drawTextureProgram);
+
+  glAttachShader(drawTextureProgram, drawTextureVert);
+  glAttachShader(drawTextureProgram, drawTextureFrag);
+
+  glLinkProgram(drawTextureProgram);
+}
 
 void MainScene::Draw() {}
 
@@ -38,13 +54,18 @@ void MainScene::DrawUI() {
     ImGui::SliderInt("Font Size", &size, 1, 256);
     ImGui::ColorEdit3("Color", glm::value_ptr(color),
                       ImGuiColorEditFlags_Float);
+
+    ImGui::Checkbox("Draw Texture", &drawTexture);
+    // TODO: SDF is not implemented. Remove this when it is.
+    drawTexture = true;
   }
   ImGui::End();
 
   ImGui::Begin("Information");
   {
     ImGui::LabelText("Texture Width", fmt::format("{}", textureWidth).c_str());
-    ImGui::LabelText("Texture Height", fmt::format("{}", textureHeight).c_str());
+    ImGui::LabelText("Texture Height",
+                     fmt::format("{}", textureHeight).c_str());
   }
   ImGui::End();
 }
@@ -61,4 +82,9 @@ void MainScene::CleanupTexture() {
   }
 }
 
-void MainScene::CleanUp() { CleanupTexture(); }
+void MainScene::CleanUp() {
+  CleanupTexture();
+  glDeleteProgram(drawTextureProgram);
+  glDeleteShader(drawTextureVert);
+  glDeleteShader(drawTextureFrag);
+}

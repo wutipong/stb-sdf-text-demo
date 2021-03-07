@@ -11,6 +11,7 @@
 
 class MainScene {
 public:
+  void Init();
   void DrawUI();
   void UpdateTexture();
   void CleanupTexture();
@@ -29,4 +30,10 @@ private:
 
   GLuint texture{0};
   int textureWidth{0}, textureHeight{0};
+
+  bool drawTexture{true};
+
+  GLuint drawTextureVert{0};
+  GLuint drawTextureFrag{0};
+  GLuint drawTextureProgram{0};
 };
