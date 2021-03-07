@@ -11,7 +11,7 @@ void MainScene::Draw() {}
 
 void MainScene::DrawUI() {
   filebrowser.Display();
-  ImGui::Begin("Font File");
+  ImGui::Begin("Parameters");
   {
     ImGui::LabelText("Font", fontFilePath.filename().string().c_str());
 
@@ -29,19 +29,11 @@ void MainScene::DrawUI() {
       auto data = reinterpret_cast<const unsigned char *>(fontData.data());
       stbtt_InitFont(&font, data, stbtt_GetFontOffsetForIndex(data, 0));
     }
+    ImGui::InputText("Charactor", charactor, sizeof(charactor));
 
     ImGui::SliderInt("Font Size", &size, 1, 256);
     ImGui::ColorEdit3("Color", glm::value_ptr(color),
                       ImGuiColorEditFlags_Float);
-  }
-  ImGui::End();
-
-  ImGui::Begin("Input Text");
-  {
-    std::array<char, 200> buffer{};
-    if (ImGui::InputTextMultiline("Input", buffer.data(), buffer.size())) {
-      text = std::string{buffer.begin(), buffer.end()};
-    };
   }
   ImGui::End();
 }

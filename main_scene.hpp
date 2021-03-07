@@ -15,10 +15,10 @@ public:
 
 private:
   ImGui::FileBrowser filebrowser;
-  std::string text;
   std::filesystem::path fontFilePath;
   int size{64};
   glm::vec3 color{};
+  char charactor[2] {"A"};
 
   stbtt_fontinfo font;
   std::vector<char> fontData;
