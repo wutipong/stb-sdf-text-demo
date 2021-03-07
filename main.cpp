@@ -7,9 +7,9 @@
 #include "imgui_impl/imgui_impl_opengl3.h"
 #include "imgui_impl/imgui_impl_sdl.h"
 
+#include "context.hpp"
 #include "main_scene.hpp"
 #include "scene.hpp"
-#include "context.hpp"
 
 constexpr auto ProjectName = "stb-sdf-text-demo";
 constexpr int WindowWidth = 800;
@@ -23,10 +23,14 @@ constexpr glm::vec4 ClearColor = {0.33f, 0.67f, 1.0f, 1.00f};
 
 void PrintDeviceInformation();
 
+void GlDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
+                     GLsizei length, const GLchar *message,
+                     const void *userParam);
+
 int main(int argc, char **argv) {
   SDL_Init(SDL_INIT_EVERYTHING);
   spdlog::set_level(spdlog::level::debug);
-  
+
   spdlog::info("{} - starts.", ProjectName);
 
   SDL_GL_SetAttribute(
@@ -62,6 +66,9 @@ int main(int argc, char **argv) {
 
   PrintDeviceInformation();
 
+  glEnable(GL_DEBUG_OUTPUT);
+  glDebugMessageCallback(GlDebugCallback, 0);
+
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO &io = ImGui::GetIO();
@@ -69,11 +76,11 @@ int main(int argc, char **argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, glCtx);
   ImGui_ImplOpenGL3_Init(GlslVersion);
 
-  Scene scene;
+  MainScene scene;
   scene.Init();
 
   while (true) {
-      context ctx{};
+    context ctx{};
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
       ImGui_ImplSDL2_ProcessEvent(&event);
@@ -131,4 +138,88 @@ void PrintDeviceInformation() {
   for (int i = 0; i < extCount; i++) {
     spdlog::info("\t{}", glGetStringi(GL_EXTENSIONS, i));
   }
+}
+
+void GlDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
+                     GLsizei length, const GLchar *message,
+                     const void *userParam) {
+
+  std::string sourceStr;
+  switch (source) {
+  case GL_DEBUG_SOURCE_API:
+    sourceStr = "API";
+    break;
+  case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+    sourceStr = "WINDOW_SYSTEM";
+    break;
+  case GL_DEBUG_SOURCE_SHADER_COMPILER:
+    sourceStr = "SHADER_COMPILER";
+    break;
+  case GL_DEBUG_SOURCE_THIRD_PARTY:
+    sourceStr = "THIRD_PARTY";
+    break;
+  case GL_DEBUG_SOURCE_APPLICATION:
+    sourceStr = "APPLICATION";
+    break;
+  case GL_DEBUG_SOURCE_OTHER:
+    sourceStr = "OTHER";
+    break;
+  }
+
+  std::string typeStr;
+  switch (type) {
+  case GL_DEBUG_TYPE_ERROR:
+    typeStr = "ERROR";
+    break;
+
+  case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+    typeStr = "DEPRECATED_BEHAVIOR";
+    break;
+
+  case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+    typeStr = "UNDEFINED_BEHAVIOR";
+    break;
+
+  case GL_DEBUG_TYPE_PORTABILITY:
+    typeStr = "PORTABILITY";
+    break;
+
+  case GL_DEBUG_TYPE_PERFORMANCE:
+    typeStr = "PERFORMANCE";
+    break;
+
+  case GL_DEBUG_TYPE_MARKER:
+    typeStr = "MARKER";
+    break;
+
+  case GL_DEBUG_TYPE_PUSH_GROUP:
+    typeStr = "PUSH_GROUP";
+    break;
+
+  case GL_DEBUG_TYPE_POP_GROUP:
+    typeStr = "POP_GROUP";
+    break;
+
+  case GL_DEBUG_TYPE_OTHER:
+    typeStr = "OTHER";
+    break;
+  }
+
+  auto level = spdlog::level::critical;
+  switch (severity) {
+  case GL_DEBUG_SEVERITY_HIGH:
+    level = spdlog::level::err;
+    break;
+  case GL_DEBUG_SEVERITY_MEDIUM:
+    level = spdlog::level::warn;
+    break;
+  case GL_DEBUG_SEVERITY_LOW:
+    level = spdlog::level::info;
+    break;
+  case GL_DEBUG_SEVERITY_NOTIFICATION:
+    level = spdlog::level::debug;
+    break;
+  }
+
+  spdlog::log(level, "OpenGL [{}] [{}]: {}", sourceStr, typeStr, std::string(message, length));
 }
