@@ -58,11 +58,7 @@ void MainScene::DrawUI() {
     ImGui::Checkbox("Draw Texture", &drawTexture);
     // TODO: SDF is not implemented. Remove this when it is.
     drawTexture = true;
-  }
-  ImGui::End();
-
-  ImGui::Begin("Information");
-  {
+ 
     ImGui::LabelText("Texture Width", fmt::format("{}", textureWidth).c_str());
     ImGui::LabelText("Texture Height",
                      fmt::format("{}", textureHeight).c_str());
