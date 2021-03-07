@@ -24,14 +24,15 @@ void Scene::Init() {
 
   // clang-format off
     float vertices[] = {
-      -1.0f, -1.0f,
-      1.0f, -1.0f,
+      0.0f, 0.0f,
+      1.0f, 0.0f,
+      1.0f, 1.0f,
       0.0f, 1.0f,
     };
   // clang-format on
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
   glEnableVertexAttribArray(0);
 }
@@ -52,12 +53,17 @@ void Scene::DoFrame(SDL_Event &event) {
   auto uniform = glGetUniformLocation(program, "in_Color");
 
   glUniform4f(uniform, color.r, color.g, color.b, color.a);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 void Scene::DoUI() {
   ImGui::Begin("Editor");
   ImGui::ColorPicker4("Color", glm::value_ptr(color),
                       ImGuiColorEditFlags_Float);
+  
+  ImGui::InputInt("Width", &width);
+  ImGui::InputInt("Height", &height);
+  ImGui::SliderFloat("Scale", &scale, 0.01f, 10.00f);
+
   ImGui::End();
 }

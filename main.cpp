@@ -8,6 +8,7 @@
 #include "imgui_impl/imgui_impl_sdl.h"
 
 #include "main_scene.hpp"
+#include "scene.hpp"
 
 constexpr auto ProjectName = "stb-sdf-text-demo";
 constexpr int WindowWidth = 800;
@@ -67,7 +68,7 @@ int main(int argc, char **argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, glCtx);
   ImGui_ImplOpenGL3_Init(GlslVersion);
 
-  MainScene scene;
+  Scene scene;
   scene.Init();
 
   while (true) {
@@ -82,9 +83,7 @@ int main(int argc, char **argv) {
     ImGui_ImplSDL2_NewFrame(window);
     ImGui::NewFrame();
 
-    // Begin Draw UI
-    scene.DrawUI();
-    // End Draw UI
+    scene.DoUI();
 
     ImGui::EndFrame();
     ImGui::Render();
@@ -97,7 +96,7 @@ int main(int argc, char **argv) {
     glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    scene.Draw();
+    scene.DoFrame(event);
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
