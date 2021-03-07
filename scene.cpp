@@ -50,9 +50,11 @@ void Scene::DoFrame(SDL_Event &event) {
   glBindVertexArray(vao);
   glUseProgram(program);
 
-  auto uniform = glGetUniformLocation(program, "in_Color");
+  auto colorUniform = glGetUniformLocation(program, "in_Color");
+  auto transformUniform = glGetUniformLocation(program, "transform");
 
-  glUniform4f(uniform, color.r, color.g, color.b, color.a);
+  glUniform4f(colorUniform, color.r, color.g, color.b, color.a);
+  glUniformMatrix4fv(transformUniform, 1, false, glm::value_ptr(transform));
   glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
