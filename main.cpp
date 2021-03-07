@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
     SDL_Delay(1);
   }
 
-  // scene.CleanUp();
+  scene.CleanUp();
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplSDL2_Shutdown();

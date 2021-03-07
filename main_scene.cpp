@@ -2,10 +2,10 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
 #include "io_util.hpp"
+#include "texture.hpp"
 
 void MainScene::Draw() {}
 
@@ -25,15 +25,34 @@ void MainScene::DrawUI() {
       fontFilePath = filebrowser.GetSelected();
       filebrowser.ClearSelected();
       fontData.clear();
-      LoadFile(fontFilePath.string(), fontData);
+      LoadFile(fontFilePath.string(), fontData,
+               std::ios_base::in | std::ios_base::binary);
       auto data = reinterpret_cast<const unsigned char *>(fontData.data());
       stbtt_InitFont(&font, data, stbtt_GetFontOffsetForIndex(data, 0));
+      UpdateTexture();
     }
-    ImGui::InputText("Charactor", charactor, sizeof(charactor));
+    if (ImGui::InputText("Charactor", charactor, sizeof(charactor))) {
+      UpdateTexture();
+    };
 
     ImGui::SliderInt("Font Size", &size, 1, 256);
     ImGui::ColorEdit3("Color", glm::value_ptr(color),
                       ImGuiColorEditFlags_Float);
   }
   ImGui::End();
+}
+
+void MainScene::UpdateTexture() {
+  CleanupTexture();
+  texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth, textureHeight);
+}
+
+void MainScene::CleanupTexture() {
+  if (texture != 0) {
+    glDeleteTextures(1, &texture);
+  }
+}
+
+void MainScene::CleanUp() {
+    CleanupTexture();
 }

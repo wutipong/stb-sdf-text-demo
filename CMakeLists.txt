@@ -13,7 +13,7 @@ add_executable(stb-sdf-text-demo
 	"imgui_impl/imgui_impl_sdl.cpp"
 	"imgui_impl/imgui_impl_opengl3.h" 
 	"imgui_impl/imgui_impl_opengl3.cpp" 
-	"main_scene.hpp" "main_scene.cpp")
+	"main_scene.hpp" "main_scene.cpp" "texture.cpp" "texture.hpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
