@@ -1,21 +1,23 @@
 #pragma once
 
 #include <GL/gl3w.h>
+#include <SDL2/SDL.h>
 #include <glm/glm.hpp>
 #include <imgui.h>
 #include <stb_truetype.h>
 #include <string>
 #include <vector>
 
+#include "context.hpp"
 #include "imgui-filebrowser/imfilebrowser.h"
 
 class MainScene {
 public:
   void Init();
-  void DrawUI();
+  void DoUI();
   void UpdateTexture();
   void CleanupTexture();
-  void Draw();
+  void DoFrame(SDL_Event &event, context &context);
   void CleanUp();
 
 private:
@@ -36,4 +38,7 @@ private:
   GLuint drawTextureVert{0};
   GLuint drawTextureFrag{0};
   GLuint drawTextureProgram{0};
+
+  GLuint vao{0};
+  GLuint vbo{0};
 };
