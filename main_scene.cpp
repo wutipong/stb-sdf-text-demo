@@ -1,7 +1,7 @@
 #include "main_scene.hpp"
 
+#include <fmt/core.h>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <stb_truetype.h>
 
 #include "io_util.hpp"
@@ -43,8 +43,8 @@ void MainScene::DrawUI() {
 
   ImGui::Begin("Information");
   {
-    ImGui::LabelText("Texture Width", "%i", textureWidth);
-    ImGui::LabelText("Texture Height", "%i", textureHeight);
+    ImGui::LabelText("Texture Width", fmt::format("{}", textureWidth).c_str());
+    ImGui::LabelText("Texture Height", fmt::format("{}", textureHeight).c_str());
   }
   ImGui::End();
 }
