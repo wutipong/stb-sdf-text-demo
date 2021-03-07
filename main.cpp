@@ -9,6 +9,7 @@
 
 #include "main_scene.hpp"
 #include "scene.hpp"
+#include "context.hpp"
 
 constexpr auto ProjectName = "stb-sdf-text-demo";
 constexpr int WindowWidth = 800;
@@ -72,6 +73,7 @@ int main(int argc, char **argv) {
   scene.Init();
 
   while (true) {
+      context ctx{};
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
       ImGui_ImplSDL2_ProcessEvent(&event);
@@ -88,15 +90,14 @@ int main(int argc, char **argv) {
     ImGui::EndFrame();
     ImGui::Render();
 
-    int actualWidth, actualHeight;
-    SDL_GetWindowSize(window, &actualWidth, &actualHeight);
+    SDL_GetWindowSize(window, &ctx.screenWidth, &ctx.screenHeight);
 
-    glViewport(0, 0, actualWidth, actualHeight);
+    glViewport(0, 0, ctx.screenWidth, ctx.screenHeight);
 
     glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    scene.DoFrame(event);
+    scene.DoFrame(event, ctx);
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

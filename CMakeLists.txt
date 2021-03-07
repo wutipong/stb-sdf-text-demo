@@ -16,7 +16,7 @@ add_executable(stb-sdf-text-demo
 	"main_scene.hpp" "main_scene.cpp" 
     "texture.cpp" "texture.hpp"
     "shader.cpp" "shader.hpp"
-    "scene.cpp" "scene.hpp")
+    "scene.cpp" "scene.hpp" "context.hpp")
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
