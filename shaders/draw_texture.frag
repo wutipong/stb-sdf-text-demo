@@ -6,7 +6,7 @@ in vec4 exColor;
 
 layout(binding = 0) uniform sampler2D distanceMap;
 
-const float smoothing = 1.0/16.0;
+const float smoothing = 1.0/64.0;
 
 void main() {
   float distance = texture(distanceMap, TexCoord).r;

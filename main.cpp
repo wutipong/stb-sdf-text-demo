@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
   SDL_Window *window = SDL_CreateWindow(
-      "sdl2-gl-project-template", SDL_WINDOWPOS_UNDEFINED,
+      "stb-sdf-text-demo", SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED, WindowWidth, WindowHeight,
       SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL);
 
