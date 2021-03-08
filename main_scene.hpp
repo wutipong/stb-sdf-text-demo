@@ -23,7 +23,7 @@ public:
 private:
   ImGui::FileBrowser filebrowser;
   std::filesystem::path fontFilePath;
-  int size{64};
+  float scale{ 1.0f };
   glm::vec3 color{};
   char charactor[2]{"A"};
 

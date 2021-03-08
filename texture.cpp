@@ -15,14 +15,12 @@ GLuint texture::sdf::LoadCharactor(stbtt_fontinfo &info, const char &codepoint,
       stbtt_GetCodepointSDF(&info, scale, codepoint, Padding, OnEdgeValue,
                             PixelDistScale, &width, &height, &xoff, &yoff);
 
-  std::vector<unsigned char> vec{ data, data + (width * height) };
-
   GLuint texture;
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, width, height, 0, GL_RED,
-               GL_UNSIGNED_BYTE, vec.data());
+               GL_UNSIGNED_BYTE, data);
 
   stbtt_FreeSDF(data, nullptr);
 

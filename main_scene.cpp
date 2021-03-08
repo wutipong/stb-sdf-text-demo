@@ -64,7 +64,8 @@ void MainScene::DoFrame(SDL_Event &event, context &ctx) {
   auto transformUniform = glGetUniformLocation(program, "transform");
 
   auto world =
-      glm::scale(glm::mat4{1.0f}, glm::vec3(textureWidth, textureHeight, 1.0f));
+      glm::scale(glm::mat4{1.0f},
+                 glm::vec3(textureWidth * scale, textureHeight * scale, 1.0f));
   auto view = glm::lookAt(glm::vec3{0, 0, 10.0f}, glm::vec3{0, 0, 0},
                           glm::vec3{0, 1, 0});
 
@@ -107,7 +108,7 @@ void MainScene::DoUI() {
       UpdateTexture();
     };
 
-    ImGui::SliderInt("Font Size", &size, 1, 256);
+    ImGui::SliderFloat("Scale", &scale, 0.25f, 10.0f);
     ImGui::ColorEdit3("Color", glm::value_ptr(color),
                       ImGuiColorEditFlags_Float);
 
@@ -125,8 +126,8 @@ void MainScene::DoUI() {
 void MainScene::UpdateTexture() {
   CleanupTexture();
   if (charactor[0] != 0) {
-      texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth,
-          textureHeight);
+    texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth,
+                                          textureHeight);
   }
 }
 
