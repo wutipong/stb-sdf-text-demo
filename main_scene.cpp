@@ -15,7 +15,6 @@ void MainScene::Init() {
       shader::LoadSource("shaders/draw_texture.frag", GL_FRAGMENT_SHADER);
 
   drawTextureProgram = glCreateProgram();
-  glUseProgram(drawTextureProgram);
 
   glAttachShader(drawTextureProgram, drawTextureVert);
   glAttachShader(drawTextureProgram, drawTextureFrag);
@@ -52,6 +51,8 @@ void MainScene::DoFrame(SDL_Event &event, context &ctx) {
 
   glBindVertexArray(vao);
   glBindTexture(GL_TEXTURE_2D, texture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   auto program = drawTextureProgram;
   glUseProgram(program);
