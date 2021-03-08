@@ -4,10 +4,13 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec4 exColor;
 
-layout(binding = 0) uniform sampler2D alphaMap;
+layout(binding = 0) uniform sampler2D distanceMap;
+
+const float smoothing = 1.0/16.0;
 
 void main() {
-  float alpha = texture(alphaMap, TexCoord).r;
+  float distance = texture(distanceMap, TexCoord).r;
+  float alpha = smoothstep(0.5 - smoothing, 0.5+smoothing, distance);
 
-  FragColor = vec4(alpha, alpha, alpha, 1.0);
+  FragColor = vec4(exColor.rgb, exColor.a* alpha);
 }
