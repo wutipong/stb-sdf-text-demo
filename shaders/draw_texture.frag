@@ -9,6 +9,5 @@ layout(binding = 0) uniform sampler2D alphaMap;
 void main() {
   float alpha = texture(alphaMap, TexCoord).r;
 
-  FragColor = exColor;
-  FragColor.a = exColor.a * alpha;
+  FragColor = vec4(alpha, alpha, alpha, 1.0);
 }

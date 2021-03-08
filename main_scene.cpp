@@ -28,17 +28,17 @@ void MainScene::Init() {
   // clang-format off
   float vertices[] = {
   /*x   , y   , u   , v   */
-    0.0f, 0.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 0.0f,
+    0.0f, 1.0f, 0.0f, 0.0f,
   };
   // clang-format on
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
                         reinterpret_cast<void *>(2 * sizeof(float)));
 
   glEnableVertexAttribArray(0);
@@ -48,6 +48,9 @@ void MainScene::Init() {
 void MainScene::DoFrame(SDL_Event &event, context &ctx) {
   if (texture == 0)
     return;
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glBindVertexArray(vao);
   glBindTexture(GL_TEXTURE_2D, texture);
@@ -121,8 +124,10 @@ void MainScene::DoUI() {
 
 void MainScene::UpdateTexture() {
   CleanupTexture();
-  texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth,
-                                        textureHeight);
+  if (charactor[0] != 0) {
+      texture = texture::sdf::LoadCharactor(font, charactor[0], textureWidth,
+          textureHeight);
+  }
 }
 
 void MainScene::CleanupTexture() {
